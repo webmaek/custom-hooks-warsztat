@@ -1,76 +1,35 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 
-const useForm = ({ initialValues, onSubmit }) => {
-  const [values, setValues] = useState(initialValues || {});
+export default (callback, validate, initialValues) => {
+  const [values, setValues] = useState(initialValues);
   const [errors, setErrors] = useState({});
-  const [touched, setTouched] = useState({});
-  const [onSubmitting, setOnSubmitting] = useState(false);
-  const [onBlur, setOnBlur] = useState(false);
-
-  const formRendered = useRef(true);
-
-  useEffect(() => {
-    if (formRendered.current) {
-      setValues(initialValues);
-      setErrors({});
-      setTouched({});
-      setOnSubmitting(false);
-      setOnBlur(false);
-    }
-    formRendered.current = false;
-  }, [initialValues]);
-
-  const validate = () => {
-    const newErrors = {};
-    for (let value in values) {
-      if (value === 'name') {
-        if (values.name === '') {
-          newErrors.name = `Name field is required!`;
-        }
-      }
-      if (value === 'lastName') {
-        if (values.lastName === '') {
-          newErrors.lastName = `Last name field is required!`;
-        }
-      }
-      if (value === 'age') {
-        if ((values.age === 0 || values.age <= 0 || values.age >= 99)) {
-          newErrors.age = `Age field is required, age must be minimum 0 and maximum 99`;
-        }
-      }
-    }
-    setErrors(newErrors);
-  }
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (event) => {
-    const { target } = event;
-    const { name, value } = target;
-    event.persist();
-    setValues({ ...values, [name]: value });
+    const { name, value } = event.target;
+    setValues({
+      ...values,
+      [name]: value,
+    });
   };
 
-  const handleBlur = (event) => {
-    const { target } = event;
-    const { name } = target;
-    setTouched({ ...touched, [name]: true });
-    setErrors({ ...errors });
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    setErrors(validate(values));
+    setIsSubmitting(true);
   };
 
-  const handleSubmit = async (event) => {
-    if (event) event.preventDefault();
-    setErrors({ ...errors });
-    onSubmit({ values, errors });
-    validate(values);
-  };
+  useEffect(() => {
+    if (Object.keys(errors).length === 0 && isSubmitting) {
+      callback();
+      setValues(initialValues);
+    }
+  }, [errors]);
 
   return {
+    handleChange,
+    handleSubmit,
     values,
     errors,
-    touched,
-    handleChange,
-    handleBlur,
-    handleSubmit
   };
 };
-
-export default useForm;

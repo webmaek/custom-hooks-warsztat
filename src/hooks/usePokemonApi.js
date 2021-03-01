@@ -17,13 +17,9 @@ const usePokemonApi = (value) => {
       axios
         .get(`${BASE_URL}/${query}`)
         .then((response) => setPokemon(response.data))
-        .catch((error) => setError(error));
-
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 2500);
+        .catch((error) => setError(error))
+        .finally(() => setIsLoading(false));
     };
-
     fetchData();
   }, [query]);
 

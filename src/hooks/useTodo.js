@@ -1,21 +1,18 @@
-import { useState } from "react";
 import { v4 as uuid } from "uuid";
+import useLocalStorage from "./useLocalStorage";
 
-const initialTodos = [
-  { id: "111", text: "Hello World", completed: false },
-  { id: "222", text: "Buy Milk", completed: true },
-  { id: "333", text: "Do Chores", completed: false },
-];
-
-const useTodo = () => {
-  const [todos, setTodos] = useState(initialTodos);
+const useTodo = (initialTodos) => {
+  const [todos, setTodos] = useLocalStorage(
+    "todos",
+    initialTodos ? initialTodos : []
+  );
 
   const addTodo = (text) => {
     setTodos([...todos, { id: uuid(), text, completed: false }]);
   };
 
   const toggleTodo = (id) => {
-    const newTodos = todos.map((todo) => {
+    const updatedTodos = todos.map((todo) => {
       if (todo.id === id) {
         return {
           ...todo,
@@ -24,12 +21,12 @@ const useTodo = () => {
       }
       return todo;
     });
-    setTodos(newTodos);
+    setTodos(updatedTodos);
   };
 
   const deleteTodo = (id) => {
-    const newTodos = todos.filter((todo) => todo.id !== id);
-    setTodos(newTodos);
+    const updatedTodos = todos.filter((todo) => todo.id !== id);
+    setTodos(updatedTodos);
   };
 
   return {

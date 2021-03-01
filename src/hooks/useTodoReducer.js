@@ -1,13 +1,14 @@
 import { useReducer } from "react";
 import { v4 as uuid } from "uuid";
+import TYPES from "../components/Todo/helpers/Todo.constants";
 
 const todosReducer = (state, action) => {
   switch (action.type) {
-    case "ADD_TODO":
+    case TYPES.ADD_TODO:
       return [...state, action.payload];
-    case "DELETE_TODO":
+    case TYPES.DELETE_TODO:
       return state.filter((todo) => todo.id !== action.id);
-    case "TOGGLE_TODO_COMPLETION":
+    case TYPES.TOGGLE_TODO_COMPLETION:
       return state.map((todo) => {
         if (todo.id === action.id) {
           return {
@@ -22,30 +23,30 @@ const todosReducer = (state, action) => {
   }
 };
 
-const useTodoReducer = (initialValue) => {
+const useTodoReducer = (initialValue = []) => {
   const [todos, dispatch] = useReducer(todosReducer, initialValue);
 
   const addTodo = (text) => {
     dispatch({
-      type: "ADD_TODO",
+      type: TYPES.ADD_TODO,
       payload: { id: uuid(), text, completed: false },
     });
   };
 
   const toggleTodo = (id) => {
-    dispatch({ type: "TOGGLE_TODO_COMPLETION", id });
+    dispatch({ type: TYPES.TOGGLE_TODO_COMPLETION, id });
   };
 
   const deleteTodo = (id) => {
-    dispatch({ type: "DELETE_TODO", id });
+    dispatch({ type: TYPES.DELETE_TODO, id });
   };
 
   return {
     todos,
     addTodo,
     toggleTodo,
-    deleteTodo
+    deleteTodo,
   };
-}
+};
 
 export default useTodoReducer;

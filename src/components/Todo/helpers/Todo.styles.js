@@ -2,18 +2,19 @@ import {
   Paper as UIPaper,
   Grid as UIGrid,
   TextField as UIField,
+  ListItemText,
 } from "@material-ui/core";
 import { styled } from "@material-ui/core/styles";
 
 export const Container = styled(UIPaper)({
-  backgroundColor: "#fafafa",
+  backgroundColor: "#d9d9d9",
   padding: 0,
   margin: 0,
-  height: "90vh",
+  height: "100vh",
 });
 
 export const Grid = styled(UIGrid)({
-  marginTop: "1rem",
+  paddingTop: "1rem",
 });
 
 export const FormWrapper = styled(UIPaper)({
@@ -24,3 +25,10 @@ export const FormWrapper = styled(UIPaper)({
 export const Input = styled(UIField)({});
 
 export const TodoListWrapper = styled(UIPaper)({});
+
+export const TodoText = styled(({ completed, ...other }) => (
+  <ListItemText {...other} />
+))({
+  textDecoration: (props) => (props.completed ? "line-through" : "none"),
+  color: (props) => (props.completed ? "#bfbfbf" : "#000"),
+});
