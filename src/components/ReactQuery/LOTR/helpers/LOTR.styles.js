@@ -7,3 +7,11 @@ export const Container = styled(Paper)({
   margin: 0,
   height: "100vh",
 });
+
+export const SpinnerContainer = styled(Paper)({
+  padding: "10px",
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  alignItems: "center",
+});

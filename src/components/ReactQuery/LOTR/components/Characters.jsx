@@ -7,8 +7,10 @@ import {
   ListItem,
   ListItemText,
   ListItemIcon,
+  CircularProgress,
 } from "@material-ui/core";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+import * as Styled from "../helpers/LOTR.styles.js";
 import { useQuery } from "react-query";
 import { fetchCharacters } from "../helpers/api";
 
@@ -27,7 +29,11 @@ const Characters = () => {
   });
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return (
+      <Styled.SpinnerContainer>
+        <CircularProgress />
+      </Styled.SpinnerContainer>
+    );
   }
 
   if (isError) {

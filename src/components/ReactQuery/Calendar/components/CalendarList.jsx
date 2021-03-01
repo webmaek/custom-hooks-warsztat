@@ -4,7 +4,9 @@ import {
   List,
   ListItem,
   ListItemText,
+  CircularProgress,
 } from "@material-ui/core";
+import { SpinnerContainer } from "../../LOTR/helpers/LOTR.styles.js";
 import CalendarDelete from "./CalendarDelete";
 import { fetchEvents } from "../helpers/api";
 import { useQuery } from "react-query";
@@ -15,7 +17,9 @@ const CalendarList = () => {
   if (isLoading) {
     return (
       <Paper style={{ marginTop: "1rem" }}>
-        <Typography>Loading...</Typography>
+        <SpinnerContainer>
+          <CircularProgress />
+        </SpinnerContainer>
       </Paper>
     );
   }

@@ -4,8 +4,10 @@ import {
   ListItem,
   ListItemText,
   ListItemIcon,
+  CircularProgress,
 } from "@material-ui/core";
 import MenuBookIcon from "@material-ui/icons/MenuBook";
+import * as Styled from "../helpers/LOTR.styles.js";
 import { useQuery } from "react-query";
 import { fetchBooks } from "../helpers/api";
 
@@ -13,7 +15,11 @@ const Books = () => {
   const { data, isLoading, isError, error } = useQuery("books", fetchBooks);
 
   if (isLoading) {
-    return <h1>Loading data...</h1>;
+    return (
+      <Styled.SpinnerContainer>
+        <CircularProgress />
+      </Styled.SpinnerContainer>
+    );
   }
 
   if (isError) {

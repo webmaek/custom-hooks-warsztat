@@ -4,8 +4,10 @@ import {
   ListItem,
   ListItemText,
   ListItemIcon,
+  CircularProgress,
 } from "@material-ui/core";
 import MovieIcon from "@material-ui/icons/Movie";
+import * as Styled from "../helpers/LOTR.styles.js";
 import { useQuery } from "react-query";
 import { fetchMovies } from "../helpers/api";
 
@@ -13,7 +15,11 @@ const Movies = () => {
   const { data, isLoading, isError, error } = useQuery("movies", fetchMovies);
 
   if (isLoading) {
-    return <h1>Loading data...</h1>;
+    return (
+      <Styled.SpinnerContainer>
+        <CircularProgress />
+      </Styled.SpinnerContainer>
+    );
   }
 
   if (isError) {
